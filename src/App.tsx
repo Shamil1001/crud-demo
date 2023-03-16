@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import axios from "axios";
 
@@ -46,7 +47,7 @@ function EditList({
       email: editedEmail,
     };
     axios
-      .put(`https://jsonplaceholder.typicode.com/users/${id}`, updatedUser)
+      .put(`https://jsonplaceholder.typicode.com/posts/${id}`, updatedUser)
       .then((res) => {
         console.log(res.data);
         const updatedUsers = lists.map((user) =>
@@ -56,7 +57,6 @@ function EditList({
         );
         setLists(updatedUsers);
         setEditState(-1);
-        // setIsEditing(false);
       })
       .catch((err) => console.log(err));
 
@@ -90,8 +90,8 @@ function App() {
   const [users, setUsers] = useState<any[]>([]);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editState, setEditState] = useState<number>(-1);
+  const [clientId, setClientId] = useState<number>(11);
 
   useEffect(() => {
     axios
@@ -105,6 +105,7 @@ function App() {
 
   const handleAddUser = () => {
     const newUser = {
+      id: clientId,
       name: name,
       email: email,
     };
@@ -114,6 +115,7 @@ function App() {
         setUsers([...users, res.data]);
         setName("");
         setEmail("");
+        setClientId(clientId + 1);
       })
       .catch((err) => console.log(err));
   };
@@ -125,11 +127,11 @@ function App() {
       .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then((res) => {
         console.log(res.status);
-        if (res.status !== 200) {
-          return;
-        } else {
-          setUsers(users.filter((item) => item.id !== id));
-        }
+        setUsers(users.filter((item) => item.id !== id));
+        // if (res.status !== 200) {
+        //   return;
+        // } else {
+        // }
       })
       .catch((err) => console.log(err));
   };
