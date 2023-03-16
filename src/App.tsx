@@ -110,9 +110,9 @@ function App() {
       email: email,
     };
     axios
-      .post("https://jsonplaceholder.typicode.com/posts", newUser)
+      .post("https://jsonplaceholder.typicode.com/users", newUser)
       .then((res) => {
-        setUsers([...users, res.data]);
+        setUsers([...users, { ...res.data, id: clientId }]);
         setName("");
         setEmail("");
         setClientId(clientId + 1);
@@ -124,7 +124,7 @@ function App() {
     console.log(id);
     // const userss = users.filter((item) => item.id !== id);
     axios
-      .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then((res) => {
         console.log(res.status);
         setUsers(users.filter((item) => item.id !== id));
